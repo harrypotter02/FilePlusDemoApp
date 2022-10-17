@@ -1,0 +1,36 @@
+﻿<Window x:Class="FilePlusDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FilePlusDemo"
+        mc:Ignorable="d"
+        Title="FilePlus Demo" Height="413.03" Width="721.504" Closed="Window_Closed">
+    <Grid x:Name="mymain_grid">
+        <StackPanel Orientation="Vertical" Loaded="StackPanel_Loaded">
+            <StackPanel Orientation="Vertical" Background="#FFE0F1F9">
+            <Label>application:Create log and direct Debug.WriteLine("") stream to file.</Label>
+            <Label>flib.CreateDebug();</Label>
+            <Label>Debug.WriteLine("Hello Dev!");</Label>
+            <Label>flib.CloseDebug();</Label>
+            <Button x:Name="create_dev_log" HorizontalAlignment="Left" VerticalAlignment="Top" Click="create_dev_log_Click" >Write to file</Button>
+            </StackPanel>
+            <Separator></Separator>
+            <StackPanel Orientation="Vertical" Background="#FFE0F7DF">
+                <Label>application: Create log file for write text anywhere.</Label>
+            <Label>example1:Create log</Label>
+            <Label>objectName.CreateLog("mytest1.txt")</Label>
+                <Label>objectName.addLog("text")</Label>
+            <TextBlock Background="#FFE5CCE8" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Example1Str}" MinWidth="100"></TextBlock>
+            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click">Wrte to file</Button>
+            </StackPanel>
+            <Separator></Separator>
+            <StackPanel Orientation="Vertical" Background="#FFF3F1D8">
+            <Label>example2:Create log(Specify path):</Label>
+                <Label>objectName.CreateLog("mytest2.txt", Environment.CurrentDirectory)</Label>
+            <TextBlock Background="#FFE5CCE8" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Example2Str}" MinWidth="100"></TextBlock>
+            <Button x:Name="create_debug_log_with_path" HorizontalAlignment="Left" VerticalAlignment="Top" Click="create_debug_log_with_path_Click" >Write to file</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
