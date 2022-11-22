@@ -4,33 +4,115 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FilePlusDemo"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="FilePlus Demo" Height="413.03" Width="721.504" Closed="Window_Closed">
-    <Grid x:Name="mymain_grid">
-        <StackPanel Orientation="Vertical" Loaded="StackPanel_Loaded">
-            <StackPanel Orientation="Vertical" Background="#FFE0F1F9">
-            <Label>application:Create log and direct Debug.WriteLine("") stream to file.</Label>
-            <Label>flib.CreateDebug();</Label>
-            <Label>Debug.WriteLine("Hello Dev!");</Label>
-            <Label>flib.CloseDebug();</Label>
-            <Button x:Name="create_dev_log" HorizontalAlignment="Left" VerticalAlignment="Top" Click="create_dev_log_Click" >Write to file</Button>
+        SizeToContent="WidthAndHeight"
+        Title="FilePlus Demo"  Closed="Window_Closed" Width="746" Height="976" >
+    <Window.Resources>
+        <SolidColorBrush x:Key="FwGray" Color="Gray"></SolidColorBrush>
+        <SolidColorBrush x:Key="FwBrushNoLevel" Color="#FF8BE6DE"></SolidColorBrush>
+        <SolidColorBrush x:Key="FwBrushError" Color="#FFC92C7A"></SolidColorBrush>
+        <SolidColorBrush x:Key="FwBrushWarning" Color="#FFF3DF13"></SolidColorBrush>
+        <SolidColorBrush x:Key="FwBrushInfo" Color="#FF6BBED6"></SolidColorBrush>
+        <local:MySnackOptionConveter x:Key="snack_conveter"></local:MySnackOptionConveter>
+    </Window.Resources>
+    <Grid x:Name="mymain_grid" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Vertical" Loaded="StackPanel_Loaded">
+                <Label Background="#FFF9D11B">This library(FilePlusLibrary.dll) is used to assist software developers to quickly build basic functions.</Label>
+                <Label Background="#FFF9D11B">Example: Create debug log/user log/caculate code running time/timet ick/Pop up message.</Label>
+                <Label Background="#FFF9D11B">This demo app is include Library(FilePlusLibrary.dll) you can download from my github or nuget search "FilePlus"</Label>
+                <Label Background="#FFF9D11B">Feedback: tensun891@gmail.com</Label>
+                <Separator></Separator>
+                <StackPanel Orientation="Vertical" Background="#FFE0F1F9">
+                    <Label>Usage:Create log and direct Debug.WriteLine("Hello") stream to file.</Label>
+                    <Label xml:space="preserve">flib.CreateDebug("RD_DEBUG.txt"); //create when program running.</Label>
+                    <Label xml:space="preserve">Debug.WriteLine("Hello Dev!");    //save your debug log to file</Label>
+                    <Label xml:space="preserve">flib.CloseDebug();                            //close when program exit ex:form close event</Label>
+                    <Button x:Name="create_dev_log" HorizontalAlignment="Left" VerticalAlignment="Top" Click="create_dev_log_Click" >Write to file</Button>
+                </StackPanel>
+                <Separator></Separator>
+                <StackPanel Orientation="Vertical" Background="#FFE0F7DF">
+                    <Label>Usage: Create log and write text to log anywhere!</Label>
+                    <Label>example1:Create log</Label>
+                    <Label>objectName.CreateLog("mytest1.txt")</Label>
+                    <Label>objectName.addLog("text")</Label>
+                    <TextBlock Background="#FFE5CCE8" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Example1Str}" MinWidth="100"></TextBlock>
+                    <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click">Wrte to file</Button>
+                </StackPanel>
+                <Separator></Separator>
+                <StackPanel Orientation="Vertical" Background="#FFF3F1D8">
+                    <Label>example2:Create log(Specify path):</Label>
+                    <Label>objectName.CreateLog("mytest2.txt", Environment.CurrentDirectory)</Label>
+                    <TextBlock Background="#FFE5CCE8" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Example2Str}" MinWidth="100"></TextBlock>
+                    <Button x:Name="create_debug_log_with_path" HorizontalAlignment="Left" VerticalAlignment="Top" Click="create_debug_log_with_path_Click" >Write to file</Button>
+                </StackPanel>
+                <Separator></Separator>
+                <StackPanel Orientation="Vertical" Background="#FFE5E8F0">
+                    <Label>example3:Open File Dialog:</Label>
+                    <Button x:Name="open_file_filedialog" HorizontalAlignment="Left" VerticalAlignment="Top" Click="open_file_filedialog_Click">Click</Button>
+                </StackPanel>
+                <Separator></Separator>
+                <StackPanel Orientation="Vertical" Background="#FFD3ECF5">
+                    <Label>example4:Open Save FileDialog:</Label>
+                    <Button x:Name="open_save_filedialog" HorizontalAlignment="Left" VerticalAlignment="Top" Click="open_save_filedialog_Click">Click</Button>
+                </StackPanel>
+                <Separator></Separator>
+                <StackPanel Orientation="Vertical" Background="#FFD3ECF5">
+                    <Label>example5:Get timestamp ms</Label>
+                    <Button x:Name="get_timestamp" HorizontalAlignment="Left" VerticalAlignment="Top" Click="get_timestamp_Click" >Click Me</Button>
+                </StackPanel>
+                <Separator></Separator>
+                <!--example6:Custom Snackbar-->
+                <Grid x:Name="snap_example_grid">
+                    <StackPanel Orientation="Vertical" Background="#FFF1F595">
+                        <Label>example6: Custom Snackbar</Label>
+                        <StackPanel x:Name="snap_panel" Orientation="Vertical">
+                            <Label>輸入訊息:</Label>
+                            <TextBox Text="{Binding MyTalk}" MinWidth="100" HorizontalAlignment="Left"></TextBox>
+                            <RadioButton IsChecked="{Binding MessageType,Converter={StaticResource snack_conveter},ConverterParameter=MY_NORMAL}" GroupName="Snack">一般類訊息</RadioButton>
+                            <RadioButton IsChecked="{Binding MessageType,Converter={StaticResource snack_conveter},ConverterParameter=MY_WARNING}" GroupName="Snack">警告類訊息</RadioButton>
+                            <RadioButton IsChecked="{Binding MessageType,Converter={StaticResource snack_conveter},ConverterParameter=MY_ERROR}" GroupName="Snack">錯誤類訊息</RadioButton>
+                        </StackPanel>
+                        <Button x:Name="PopSnackBarButton" HorizontalAlignment="Left" Margin="0,5,0,5" Click="PopSnackBarButton_Click">Click for pop up snackbar!</Button>
+                        <materialDesign:Snackbar IsActive="False" x:Name="Bar" 
+                                             MessageQueue="{Binding MessageQueue}"
+                                             Message="{Binding Message,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                             VerticalAlignment="Bottom">
+                            <materialDesign:Snackbar.Style>
+                                <Style TargetType="materialDesign:Snackbar" BasedOn="{StaticResource {x:Type materialDesign:Snackbar}}">
+                                    <Setter Property="Background" Value="{StaticResource FwGray}"></Setter>
+                                    <Style.Triggers>
+                                        <!--依數據觸發事件-->
+                                        <DataTrigger Binding="{Binding CurrentMessageLevel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Value="1">
+                                            <Setter Property="Background" Value="{StaticResource FwBrushError}"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentMessageLevel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Value="2">
+                                            <Setter Property="Background" Value="{StaticResource FwBrushWarning}"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentMessageLevel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Value="3">
+                                            <Setter Property="Background" Value="{StaticResource FwBrushInfo}"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </materialDesign:Snackbar.Style>
+                        </materialDesign:Snackbar>
+                    </StackPanel>
+                </Grid>
+                <Separator></Separator>
+                <StackPanel Orientation="Vertical" Background="#FFF7F0F0">
+                    <Label>example7:Output text on Listbox</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding BoxAutoScroll}" >AutoScroll</CheckBox>
+                        <Button x:Name="CleanOutputButton" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Click="CleanOutputButton_Click">Clean</Button>
+                    </StackPanel>
+                    <ListBox x:Name="OutputListBox" MinHeight="100" MaxHeight="100" MinWidth="300" MaxWidth="300" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Left">
+                    </ListBox>
+                </StackPanel>
             </StackPanel>
-            <Separator></Separator>
-            <StackPanel Orientation="Vertical" Background="#FFE0F7DF">
-                <Label>application: Create log file for write text anywhere.</Label>
-            <Label>example1:Create log</Label>
-            <Label>objectName.CreateLog("mytest1.txt")</Label>
-                <Label>objectName.addLog("text")</Label>
-            <TextBlock Background="#FFE5CCE8" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Example1Str}" MinWidth="100"></TextBlock>
-            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click">Wrte to file</Button>
-            </StackPanel>
-            <Separator></Separator>
-            <StackPanel Orientation="Vertical" Background="#FFF3F1D8">
-            <Label>example2:Create log(Specify path):</Label>
-                <Label>objectName.CreateLog("mytest2.txt", Environment.CurrentDirectory)</Label>
-            <TextBlock Background="#FFE5CCE8" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Example2Str}" MinWidth="100"></TextBlock>
-            <Button x:Name="create_debug_log_with_path" HorizontalAlignment="Left" VerticalAlignment="Top" Click="create_debug_log_with_path_Click" >Write to file</Button>
-            </StackPanel>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Window>
